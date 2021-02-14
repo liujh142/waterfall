@@ -28,7 +28,6 @@
        <div id="load">我是看不见的</div>
    </div>
    <script>
-       start();
        var isLoading = false;
        var colSumHeight =[];
        var nodeWidth = $('.item').outerWidth(true);
@@ -37,9 +36,8 @@
         for(var i = 0;i < colNumber;i++ ){
             colSumHeight[i] = 0;
         }
-       
-       var isDataArrive = true;
-       function start(){
+        start();
+        function start(){
             getData(function(newsList){
                 $.each(newsList,function(idx,news){
                     var $node = getNode(news)
@@ -62,8 +60,8 @@
         }
        function getData(callback){
             pageCount = 15;
-            if(isLoading) return;
-            var isLoading = true;
+            if(isLoading){return};
+             isLoading = true;
             $.ajax({
                 url : 'https://photo.sina.cn/aj/v2/index?cate=military',
                 dataType : 'jsonp',
@@ -73,9 +71,9 @@
                     page : pageIndex
                 }
             }).done(function(ret){
+                console.log(ret.data)
                 callback(ret.data);
-                pageIndex ++;
-                isDataArrive = true;
+                pageIndex++;
             }).always(function(){
                 isLoading = false;
             })
@@ -108,7 +106,6 @@
             }
         })
         $(window).on('scroll',function(){
-            console.log(isToBottom());
             if(isToBottom()){
                 start();
             }
